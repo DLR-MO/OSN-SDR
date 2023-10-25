@@ -8,7 +8,7 @@ from sklearn.utils import resample
 from joblib import dump, load
 import random
 from sklearn.utils import shuffle
-from prepare_datasets import DS_PATH, FIG_PATH
+from prepare_datasets import DS_PATH
 
 RESULT_PATH = DS_PATH.parent.parent / "results"
 (RESULT_PATH / "svm_models").mkdir(exist_ok=True, parents=True)
