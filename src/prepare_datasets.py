@@ -1,20 +1,17 @@
 import pandas as pd
 import numpy as np
-from pathlib import Path
 import tqdm
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
 import random
 from plot_utils import show_2d_hist, show_feature_density
 from combine_n_augment_sdr import DATA_FOLDER
 
-report_path = DATA_FOLDER / "augmented_sdrs" / "sdrs_with_layover"
+REPORT_PATH = DATA_FOLDER / "augmented_sdrs" / "sdrs_with_layover"
 
-features_path = DATA_FOLDER / "feature_files"
-ds_path = DATA_FOLDER / "datasets"
-ds_path.mkdir(exist_ok=True, parents=True)
-fig_path = DATA_FOLDER.parent / "figs"
-fig_path.mkdir(exist_ok=True)
+FEATURES_PATH = DATA_FOLDER / "feature_files"
+DS_PATH = DATA_FOLDER / "datasets"
+DS_PATH.mkdir(exist_ok=True, parents=True)
+FIG_PATH = DATA_FOLDER.parent / "figs"
+FIG_PATH.mkdir(exist_ok=True)
 
 
 def create_layover_df(layovers_folder, layover_df_path, reports_df):
@@ -91,12 +88,12 @@ def prepare_dataset(layovers_df, feature_columns):
             features_df = ac_layovers_df[feature_columns]
             features_df.loc[:, "LayoverLocalStartTime"] = local_time_feature(features_df["LayoverLocalStartTime"])
             features_df.loc[:, "LayoverHours"] = features_df["LayoverHours"].clip(0, layover_hours_cap)
-            features_path.mkdir(exist_ok=True)
-            features_df.to_csv(features_path / f"{icao}.csv", index=False)
+            FEATURES_PATH.mkdir(exist_ok=True)
+            features_df.to_csv(FEATURES_PATH / f"{icao}.csv", index=False)
             all_features_dfs.append(features_df)
 
     all_features_df = pd.concat(all_features_dfs).dropna(axis=0)
-    show_2d_hist(all_features_df, "LayoverLocalStartTime", "LayoverHours", save=fig_path / "FeatureDist2D.pdf")
+    show_2d_hist(all_features_df, "LayoverLocalStartTime", "LayoverHours", save=FIG_PATH / "FeatureDist2D.pdf")
     for col in all_features_df.columns[:-1]:
         show_feature_density(all_features_df, col)
     n = all_features_df.shape[0]
@@ -105,17 +102,17 @@ def prepare_dataset(layovers_df, feature_columns):
     rand = random.sample(range(n), int(n * 0.1))
     mask[rand] = False
     train_df = all_features_df[mask]
-    train_df.to_csv(ds_path / "svm_train_set.csv", index=False)
+    train_df.to_csv(DS_PATH / "svm_train_set.csv", index=False)
     print("Stored training file")
     test_df = all_features_df[~mask]
-    test_df.to_csv(ds_path / "svm_test_set.csv", index=False)
+    test_df.to_csv(DS_PATH / "svm_test_set.csv", index=False)
     print("Stored test file")
     return stds
 
 
 if __name__ == '__main__':
     df = []
-    for report in report_path.iterdir():
+    for report in REPORT_PATH.iterdir():
         df.append(pd.read_csv(report))
 
     df = pd.concat(df)

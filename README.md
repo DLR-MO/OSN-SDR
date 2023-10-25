@@ -44,7 +44,7 @@ python combine_sdr_osn.py --model [model_name]
 ``
 
 ### Prepare normalised dataset
-Prepare a datasets based on the desired features from the layover information.
+Prepare a standardised datasets based on the desired features from the layover information.
 A training and test set are created with a 90%-10% split.
 
 ``
