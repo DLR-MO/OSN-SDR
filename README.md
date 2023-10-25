@@ -4,7 +4,7 @@ Combining service difficulty reports with OpenSky network data
 ## Dowloading data
 
 To get started download the service difficulty reports of your model of interest at https://sdrs.faa.gov/ and put them under:
-/data/raw_sdrs/{model_name}
+/data/raw_sdrs/[model_name]
 
 Then dowload the most recent OpenSky Aircraft database at https://opensky-network.org/datasets/metadata/ and put it in  under:
 /data/
@@ -18,7 +18,7 @@ add this file under /data/
 This script will go through all files in the folder with your model name, combine them together and augment them with information from the OSN aircraft database.
 
 ``
-python combine_n_augment_sdrs.py --model {model_name}
+python combine_n_augment_sdrs.py --model [model_name]
 ``
 
 ### Downloading flights of aircraft with reports
@@ -34,4 +34,9 @@ python dowload_flights.py
 To add the timezone information to each airport run
 ``
 python augment_airports.py
+``
+
+### Identify Layovers and add them to the SDRs
+``
+python combine_sdr_osn.py --model [model_name]
 ``
