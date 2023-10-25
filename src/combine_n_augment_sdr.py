@@ -4,6 +4,7 @@ import pandas as pd
 import argparse
 import shutil
 from tqdm import tqdm
+import pickle
 tqdm.pandas()
 
 DATA_FOLDER = Path.cwd()
@@ -139,4 +140,7 @@ if __name__ == '__main__':
     complete_df['AircraftOwner'] = complete_df['AircraftOwner'].str.replace(' COMPANY ', ' ')
 
     complete_df.to_csv(data_store_path / f"{model}.csv", index=False)
+
+    with open(DATA_FOLDER / "icao_list.pkl", 'wb') as f:
+        pickle.dump(list(complete_df['icao24'].unique()), f)
     shutil.rmtree(temp_data_store_path)

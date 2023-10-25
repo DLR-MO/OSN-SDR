@@ -18,3 +18,11 @@ This script will go through all files in the folder with your model name, combin
 python combine_n_augment_sdrs.py --model {model_name}
 ``
 
+### Downloading flights of aircraft with reports
+To download the flights from the OpenSky network the pyopensky library is used.
+Please follow the installation instructions at https://github.com/open-aviation/pyopensky.
+Note: this script takes a long time to execute and downloads large amounts of data.
+
+``
+python dowload_flights.py
+``
