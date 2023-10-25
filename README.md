@@ -9,6 +9,9 @@ To get started download the service difficulty reports of your model of interest
 Then dowload the most recent OpenSky Aircraft database at https://opensky-network.org/datasets/metadata/ and put it in  under:
 /data/
 
+Finally from https://ourairports.com/data/ download the "airports.csv" file to obtain a list of airports and their coordinates.
+add this file under /data/
+
 ## Running the Code
 
 ### Augmenting SDRs with OSN AircraftDB
@@ -25,4 +28,10 @@ Note: this script takes a long time to execute and downloads large amounts of da
 
 ``
 python dowload_flights.py
+``
+
+### Add airport timezones
+To add the timezone information to each airport run
+``
+python augment_airports.py
 ``
