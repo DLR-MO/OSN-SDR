@@ -32,11 +32,21 @@ python dowload_flights.py
 
 ### Add airport timezones
 To add the timezone information to each airport run
+
 ``
 python augment_airports.py
 ``
 
 ### Identify Layovers and add them to the SDRs
+
 ``
 python combine_sdr_osn.py --model [model_name]
+``
+
+### Prepare normalised dataset
+Prepare a datasets based on the desired features from the layover information.
+A training and test set are created with a 90%-10% split.
+
+``
+python prepare_datasets.py
 ``

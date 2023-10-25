@@ -10,8 +10,8 @@ warnings.filterwarnings("ignore")
 #%%
 
 SDR_PATH = DATA_FOLDER / "augmented_sdrs"
-STORE_PATH = SDR_PATH / "with_layovers"
-LAYOVER_STORE_PATH = DATA_FOLDER / "layovers"/ "aircraft_layovers"
+STORE_PATH = SDR_PATH /  "sdrs_with_layover"
+LAYOVER_STORE_PATH = DATA_FOLDER / "layovers" / "aircraft_layovers"
 # STORE_PATH = Path("sdr")
 # LAYOVER_STORE_PATH = Path("layover")
 OSN_PATH = DATA_FOLDER / "raw_osn_ac_data"
@@ -26,14 +26,15 @@ def get_layover_df(ac_icao):
     path = OSN_PATH / f"flight_list_{ac_icao}.csv"
     if path.exists():
         df = pd.read_csv(path)
-        df.loc[:, 'firstseen'] = pd.to_numeric(df['firstseen'], errors='coerce')
-        df.loc[:, 'lastseen'] = pd.to_numeric(df['lastseen'], errors='coerce')
-        df['midflighttime'] = df[['firstseen', 'lastseen']].mean(axis=1)
+        df.loc[:, 'firstseen'] = pd.to_datetime(df['firstseen'], errors='coerce')
+        df.loc[:, 'lastseen'] = pd.to_datetime(df['lastseen'], errors='coerce')
+        df['midflighttime'] = df['firstseen'] + (df['lastseen'] - df['firstseen'])/2
+        # df['midflighttime'] = df[['firstseen', 'lastseen']].mean(axis=1)
         df.sort_values(by="midflighttime", inplace=True)
         df.reset_index(inplace=True, drop=True)
         df.loc[:, 'departure'] = df['departure'].astype(str)
         df.loc[:, 'arrival'] = df['arrival'].astype(str)
-        df.loc[:, 'day'] = pd.to_numeric(df['day'], errors='coerce')
+        df.loc[:, 'day'] = pd.to_datetime(df['day'], errors='coerce')
         entries = []
         for i, row in df.iterrows():
             if i > 0:
@@ -46,20 +47,20 @@ def get_layover_df(ac_icao):
                         layover_ap = row['departure']
                     try:
                         tz = AIRPORTS_DF[AIRPORTS_DF['ident'] == layover_ap]['Timezone'].values[0]
-                        local_dt = pd.to_datetime(row_prev['lastseen'], unit='s', utc=True).tz_convert(tz)
+                        local_dt = pd.to_datetime(row_prev['lastseen'], utc=True).tz_convert(tz)
                         layover_start = pd.to_datetime(local_dt.date()).timestamp()
                         local_timestamp = local_dt.timestamp()
                     except:
                         local_timestamp = np.nan
-                        layover_start = row_prev['day']
+                        layover_start = row_prev['day'].timestamp()
                     entries.append({
                         'LayoverAirport': layover_ap,
-                        'LayoverStartTime': row_prev['lastseen'],
-                        'LayoverEndTime': row['firstseen'],
+                        'LayoverStartTime': row_prev['lastseen'].timestamp(),
+                        'LayoverEndTime': row['firstseen'].timestamp(),
                         'LayoverStartDay': layover_start,
                         'LayoverLocalStartTime': local_timestamp,
-                        'LayoverEndDay': row['day'],
-                        'LayoverHours': (row['firstseen'] - row_prev['lastseen']) / 3600,
+                        'LayoverEndDay': row['day'].timestamp(),
+                        'LayoverHours': (row['firstseen'].timestamp() - row_prev['lastseen'].timestamp()) / 3600,
                         'LayoverNumber': len(entries),
                         'FlightNumber': i
                     })
