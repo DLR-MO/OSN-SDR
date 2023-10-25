@@ -50,3 +50,11 @@ A training and test set are created with a 90%-10% split.
 ``
 python prepare_datasets.py
 ``
+
+### Train the Support Vector Machine
+The support vector machine is implemented using [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC)
+The best performing hyper-parameters are set as default values, if you wish to change them consult ``python svm.py --help``.
+
+``
+python svm.py
+``
