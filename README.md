@@ -58,3 +58,10 @@ The best performing hyper-parameters are set as default values, if you wish to c
 ``
 python svm.py
 ``
+
+### Analyse Results
+Get the results and visualise the decision boundary.
+
+``
+python analyse_results.py
+``
