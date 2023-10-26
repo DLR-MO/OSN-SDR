@@ -14,6 +14,8 @@ add this file under /data/
 
 ## Running the Code
 
+Before running the python code install the requirements under src/requirements.txt
+
 ### Augmenting SDRs with OSN AircraftDB
 This script will go through all files in the folder with your model name, combine them together and augment them with information from the OSN aircraft database.
 
