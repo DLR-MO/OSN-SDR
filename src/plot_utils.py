@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2023 Emy Arts <emy.arts@dlr.de>
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib as mpl

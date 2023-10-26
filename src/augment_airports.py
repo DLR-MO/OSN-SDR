@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2023 Emy Arts <emy.arts@dlr.de>
+# SPDX-FileCopyrightText: 2023 German Aerospace Center
+#
+# SPDX-License-Identifier: MIT
+
 import pandas as pd
 from timezonefinder import TimezoneFinder
 from combine_n_augment_sdr import DATA_FOLDER

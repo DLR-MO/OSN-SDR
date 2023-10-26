@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2023 Emy Arts <emy.arts@dlr.de>
+# SPDX-FileCopyrightText: 2023 German Aerospace Center
+#
+# SPDX-License-Identifier: MIT
+
 import numpy as np
 from pathlib import Path
 import pandas as pd
